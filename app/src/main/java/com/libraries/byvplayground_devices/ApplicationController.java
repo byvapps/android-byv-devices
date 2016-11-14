@@ -1,8 +1,6 @@
 package com.libraries.byvplayground_devices;
 
-import android.app.ActivityManager;
 import android.app.Application;
-import android.content.pm.PackageManager;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
@@ -12,9 +10,6 @@ import com.libraries.devices.DeviceController;
 import com.libraries.inlacou.volleycontroller.VolleyController;
 
 import org.json.JSONObject;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by inlacou on 25/11/14.
@@ -87,9 +82,9 @@ public class ApplicationController extends Application {
 				return null;
 			}
 		});
-		DeviceController.getInstance().init(new DeviceController.Callbacks() {
+		DeviceController.getInstance().init(this, new DeviceController.Callbacks() {
 			@Override
-			public void saveDevice(Device device) {
+			public void saveDeviceLocal(Device device) {
 				SharedPreferencesManager.getInstance().setDevice(new Gson().toJson(device));
 			}
 
@@ -121,7 +116,7 @@ public class ApplicationController extends Application {
 
 			@Override
 			public void putDevice(Device device) {
-				VolleyController.getInstance().doPost("http://playground.byvapps.com/device/api/devices/"+device.getId(), null, null, new Gson().toJson(device), "code_post_device", new VolleyController.IOCallbacks() {
+				VolleyController.getInstance().doPut("http://playground.byvapps.com/device/api/devices/"+device.getId(), null, null, new Gson().toJson(device), "code_post_device", new VolleyController.IOCallbacks() {
 					@Override
 					public void onResponse(JSONObject jsonObject, String s) {
 						Log.d(DEBUG_TAG, "Code: " + s + " | ResponseJson: " + jsonObject);
@@ -139,5 +134,12 @@ public class ApplicationController extends Application {
 				});
 			}
 		});
+		Log.d(DEBUG_TAG, "Device: " + new Gson().toJson(DeviceController.getInstance().getDevice()));
+	}
+
+	@Override
+	public void onTerminate() {
+		DeviceController.getInstance().onTerminate(this);
+		super.onTerminate();
 	}
 }

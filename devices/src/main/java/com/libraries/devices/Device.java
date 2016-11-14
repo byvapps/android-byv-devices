@@ -1,10 +1,14 @@
 package com.libraries.devices;
 
+import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import java.util.Currency;
 import java.util.Locale;
 import java.util.UUID;
+
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 /**
  * Created by inlacou on 11/11/16.
@@ -22,18 +26,22 @@ public class Device {
 		uid = UUID.randomUUID().toString();
 		name = "";
 		os = "android";
+		pushId = "TODO";
+		badge = 0;
+		active = true;
+		updateData();
+	}
+
+	private void updateData() {
 		osVersion = Build.VERSION.RELEASE;
 		device = Build.DEVICE;
 		manufacturer = Build.MANUFACTURER;
 		model = Build.MODEL;
 		appVersion = BuildConfig.VERSION_NAME;
 		appVersionCode = String.valueOf(BuildConfig.VERSION_CODE);
-		pushId = "TODO";
 		languageCode = Locale.getDefault().getLanguage();
 		countryCode = Locale.getDefault().getCountry();
 		currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
-		badge = 0;
-		active = true;
 	}
 
 	public void setPushId(String pushId) {
@@ -106,5 +114,16 @@ public class Device {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public void setBadge(Context context, int badge) {
+		Log.d(DEBUG_TAG, "setBadge: " + badge);
+		this.badge = badge;
+		ShortcutBadger.applyCount(context, this.badge);
+	}
+
+	public void setActive(boolean active) {
+		updateData();
+		this.active = active;
 	}
 }

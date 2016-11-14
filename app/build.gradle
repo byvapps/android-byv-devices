@@ -20,7 +20,7 @@ android {
 }
 
 ext {
-	firebase_version = "9.6.1"
+	firebase_version = "9.8.0"
 }
 
 dependencies {
@@ -28,11 +28,15 @@ dependencies {
 	androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
 		exclude group: 'com.android.support', module: 'support-annotations'
 	})
-	compile 'com.android.support:appcompat-v7:25.0.0'
-	compile 'com.google.code.gson:gson:2.5'                                     //JSON utilities
+	//JSON utilities
 	compile "com.google.firebase:firebase-core:${firebase_version}"             //Firebase core
 	compile "com.google.firebase:firebase-messaging:${firebase_version}"        //Firebase messaging
+	compile project(':devices')
+	compile 'com.android.support:appcompat-v7:25.0.0'
+	compile 'com.google.code.gson:gson:2.5'
 	compile 'com.github.inlacou:VolleyControllerLibrary:1.0.0'
 	testCompile 'junit:junit:4.12'
-	compile project(':devices')
 }
+
+
+apply plugin: 'com.google.gms.google-services'

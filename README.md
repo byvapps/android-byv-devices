@@ -39,3 +39,19 @@ DeviceController.getInstance().init(this, new DeviceController.Callbacks() {
 			}
 		});
 ```
+
+When get FCM or GCM registrationId:
+
+```java
+
+			DeviceController.getInstance().onRegistrationIdObtained(token);
+			DeviceController.getInstance().postDevice();
+```
+
+Or, if it's not a new device:
+
+```java
+
+			DeviceController.getInstance().onRegistrationIdObtained(token);
+			DeviceController.getInstance().putDevice();
+```

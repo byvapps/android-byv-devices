@@ -11,6 +11,9 @@ import com.libraries.inlacou.volleycontroller.VolleyController;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by inlacou on 25/11/14.
  */
@@ -132,6 +135,13 @@ public class ApplicationController extends Application {
 						Log.d(DEBUG_TAG, "Code: " + s + " | Error: " + volleyError);
 					}
 				});
+			}
+		});
+		VolleyController.getInstance().addInterceptor(new VolleyController.Interceptor() {
+			@Override
+			public void intercept(String url, Map<String, String> headers, Map<String, String> params, String rawBody) {
+				if(headers==null) headers = new HashMap<>();
+				headers.put("deviceId", DeviceController.getInstance().getDevice().getId()+"");
 			}
 		});
 		Log.d(DEBUG_TAG, "Device: " + new Gson().toJson(DeviceController.getInstance().getDevice()));

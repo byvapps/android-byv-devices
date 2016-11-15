@@ -119,7 +119,11 @@ public class Device {
 	public void setBadge(Context context, int badge) {
 		Log.d(DEBUG_TAG, "setBadge: " + badge);
 		this.badge = badge;
-		ShortcutBadger.applyCount(context, this.badge);
+		try {
+			ShortcutBadger.applyCount(context, this.badge);
+		}catch (Exception e){
+			Log.w(DEBUG_TAG, "Badges not available on current device/configuration.");
+		}
 	}
 
 	public void setActive(boolean active) {

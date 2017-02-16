@@ -4,8 +4,10 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
+import java.util.Calendar;
 import java.util.Currency;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
@@ -17,7 +19,7 @@ public class Device {
 
 	private static final String DEBUG_TAG = Device.class.getName();
 
-	private String uid, name, os, osVersion, device, manufacturer, model, appVersion, appVersionCode, pushId, languageCode, countryCode, currencyCode;
+	private String uid, name, os, osVersion, device, manufacturer, model, appVersion, appVersionCode, pushId, languageCode, countryCode, currencyCode, timezone;
 	private boolean active;
 	private int badge;
 	private long id;
@@ -42,6 +44,7 @@ public class Device {
 		languageCode = Locale.getDefault().getLanguage();
 		countryCode = Locale.getDefault().getCountry();
 		currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
+		timezone = TimeZone.getDefault().getID();
 	}
 
 	public void setPushId(String pushId) {
@@ -106,6 +109,10 @@ public class Device {
 
 	public int getBadge() {
 		return badge;
+	}
+
+	public String getTimezone() {
+		return timezone;
 	}
 
 	public long getId() {

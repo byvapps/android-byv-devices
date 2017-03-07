@@ -28,7 +28,7 @@ public class Device {
 		uid = UUID.randomUUID().toString();
 		name = "";
 		os = "android";
-		pushId = "TODO";
+		pushId = "default_initial_value";
 		badge = 0;
 		active = true;
 		updateData();

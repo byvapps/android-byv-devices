@@ -97,4 +97,4 @@ Or, if it's not a new device:
 ```
 
 
-Do not forget to create the project on Firebase console and add the `google-services.json` file to your `/app` folder!
+Do not forget to create the project on Firebase (https://firebase.google.com/docs/android/setup?hl=en-419) console and add the `google-services.json` file to your `/app` folder!

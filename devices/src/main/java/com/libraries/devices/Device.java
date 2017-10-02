@@ -35,16 +35,16 @@ public class Device {
 	}
 
 	private void updateData() {
-		osVersion = Build.VERSION.RELEASE;
-		device = Build.DEVICE;
-		manufacturer = Build.MANUFACTURER;
-		model = Build.MODEL;
-		appVersion = BuildConfig.VERSION_NAME;
-		appVersionCode = String.valueOf(BuildConfig.VERSION_CODE);
-		languageCode = Locale.getDefault().getLanguage();
-		countryCode = Locale.getDefault().getCountry();
-		currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
-		timezone = TimeZone.getDefault().getID();
+		try { osVersion = Build.VERSION.RELEASE; }catch (Exception ignored){}
+		try { device = Build.DEVICE; }catch (Exception ignored){}
+		try { manufacturer = Build.MANUFACTURER; }catch (Exception ignored){}
+		try { model = Build.MODEL; }catch (Exception ignored){}
+		try { appVersion = BuildConfig.VERSION_NAME; }catch (Exception ignored){}
+		try { appVersionCode = String.valueOf(BuildConfig.VERSION_CODE); }catch (Exception ignored){}
+		try { languageCode = Locale.getDefault().getLanguage(); }catch (Exception ignored){}
+		try { countryCode = Locale.getDefault().getCountry(); }catch (Exception ignored){}
+		try { currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode(); }catch (Exception ignored){}
+		try { timezone = TimeZone.getDefault().getID(); }catch (Exception ignored){}
 	}
 
 	public void setPushId(String pushId) {

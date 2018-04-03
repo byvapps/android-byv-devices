@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.libraries.devices.Device;
 import com.libraries.devices.DeviceController;
@@ -102,6 +103,26 @@ public class ApplicationController extends Application {
 			}
 			
 			@Override
+			public int getVersion() {
+				return 3;
+			}
+			
+			@Override
+			public String getAppVersionCode() {
+				return BuildConfig.VERSION_CODE+"";
+			}
+			
+			@Override
+			public String getAppVersionName() {
+				return BuildConfig.VERSION_NAME;
+			}
+			
+			@Override
+			public String forceGetPushId() {
+				return FirebaseInstanceId.getInstance().getToken();
+			}
+			
+			@Override
 			public void postDevice(final Device device) {
 				Map<String, String> map = new HashMap<>();
 				try {
@@ -121,7 +142,11 @@ public class ApplicationController extends Application {
 						.addCallback(new VolleyController.IOCallbacks() {
 							@Override
 							public void onResponse(CustomResponse customResponse, String s) {
-								DeviceController.getInstance().setId(new Gson().fromJson(s, Device.class).getId());
+								try {
+									DeviceController.getInstance().setId(new JSONObject(customResponse.getData()));
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
 							}
 							
 							@Override
@@ -138,7 +163,7 @@ public class ApplicationController extends Application {
 					JSONObject jsonObject = new JSONObject(new Gson().toJson(device));
 					for (Iterator<String> it = jsonObject.keys(); it.hasNext(); ) {
 						String key = it.next();
-						map.put(key, (String) jsonObject.get(key));
+						map.put(key, jsonObject.get(key)+"");
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -151,7 +176,11 @@ public class ApplicationController extends Application {
 						.addCallback(new VolleyController.IOCallbacks() {
 							@Override
 							public void onResponse(CustomResponse customResponse, String s) {
-								DeviceController.getInstance().setId(new Gson().fromJson(s, Device.class).getId());
+								try {
+									DeviceController.getInstance().setId(new JSONObject(customResponse.getData()));
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
 							}
 							
 							@Override

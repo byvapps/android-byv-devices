@@ -22,7 +22,7 @@ public class Device {
 	private String uid, name, os, osVersion, device, manufacturer, model, appVersion, appVersionCode, pushId, languageCode, countryCode, currencyCode, timezone;
 	private boolean active;
 	private int badge;
-	private long id;
+	private String id;
 
 	public Device(){
 		uid = UUID.randomUUID().toString();
@@ -39,8 +39,6 @@ public class Device {
 		try { device = Build.DEVICE; }catch (Exception ignored){}
 		try { manufacturer = Build.MANUFACTURER; }catch (Exception ignored){}
 		try { model = Build.MODEL; }catch (Exception ignored){}
-		try { appVersion = BuildConfig.VERSION_NAME; }catch (Exception ignored){}
-		try { appVersionCode = String.valueOf(BuildConfig.VERSION_CODE); }catch (Exception ignored){}
 		try { languageCode = Locale.getDefault().getLanguage(); }catch (Exception ignored){}
 		try { countryCode = Locale.getDefault().getCountry(); }catch (Exception ignored){}
 		try { currencyCode = Currency.getInstance(Locale.getDefault()).getCurrencyCode(); }catch (Exception ignored){}
@@ -115,14 +113,22 @@ public class Device {
 		return timezone;
 	}
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-
+	
+	public void setAppVersionName(String appVersion) {
+		this.appVersion = appVersion;
+	}
+	
+	public void setAppVersionCode(String appVersionCode) {
+		this.appVersionCode = appVersionCode;
+	}
+	
 	public void setBadge(Context context, int badge) {
 		Log.d(DEBUG_TAG, "setBadge: " + badge);
 		this.badge = badge;

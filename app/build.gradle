@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-	compileSdkVersion 25
-	buildToolsVersion '26.0.2'
+	compileSdkVersion 27
+	buildToolsVersion '27.0.3'
 	defaultConfig {
 		applicationId "com.libraries.byvplayground_devices"
 		minSdkVersion 14
-		targetSdkVersion 25
+		targetSdkVersion 27
 		versionCode 1
 		versionName "1.0"
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -20,21 +20,21 @@ android {
 }
 
 ext {
-	firebase_version = "9.8.0"
+	firebase_version = "12.0.0"
 }
 
 dependencies {
-	compile fileTree(include: ['*.jar'], dir: 'libs')
-	androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+	implementation fileTree(include: ['*.jar'], dir: 'libs')
+	androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
 		exclude group: 'com.android.support', module: 'support-annotations'
 	})
-	compile "com.google.firebase:firebase-core:${firebase_version}"             //Firebase core
-	compile "com.google.firebase:firebase-messaging:${firebase_version}"        //Firebase messaging
-	compile project(':devices')
-	compile 'com.android.support:appcompat-v7:25.0.0'
-	compile 'com.google.code.gson:gson:2.5'                                     //JSON utilities
-	compile 'com.github.inlacou:VolleyControllerLibrary:1.1.0'
-	testCompile 'junit:junit:4.12'
+	implementation "com.google.firebase:firebase-core:${firebase_version}"             //Firebase core
+	implementation "com.google.firebase:firebase-messaging:${firebase_version}"        //Firebase messaging
+	implementation project(':devices')
+	implementation 'com.android.support:appcompat-v7:27.1.0'
+	implementation 'com.google.code.gson:gson:2.8.2'                                     //JSON utilities
+	implementation 'com.github.inlacou:VolleyControllerLibrary:2.2.5.3'
+	testImplementation 'junit:junit:4.12'
 }
 
 

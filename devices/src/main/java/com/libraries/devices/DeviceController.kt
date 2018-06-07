@@ -75,7 +75,10 @@ class DeviceController private constructor() {
 	}
 
 	interface Callbacks {
-		val savedDevice: Device
+		val savedDevice: Device?
+		/**
+		 * Library version. If upped, device will be recreated and a new POST will be sent.
+		 */
 		val version: Int
 		val appVersionCode: String
 		val appVersionName: String
@@ -86,7 +89,6 @@ class DeviceController private constructor() {
 	}
 
 	companion object {
-
 		val instance = DeviceController()
 	}
 }

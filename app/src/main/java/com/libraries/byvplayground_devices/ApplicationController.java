@@ -91,7 +91,7 @@ public class ApplicationController extends Application {
 				return null;
 			}
 		});
-		DeviceController.getInstance().init(this, new DeviceController.Callbacks() {
+		DeviceController.Companion.getInstance().initialize(this, true, new DeviceController.Callbacks() {
 			@Override
 			public void saveDeviceLocal(Device device) {
 				SharedPreferencesManager.getInstance().setDevice(new Gson().toJson(device));
@@ -143,7 +143,7 @@ public class ApplicationController extends Application {
 							@Override
 							public void onResponse(CustomResponse customResponse, String s) {
 								try {
-									DeviceController.getInstance().setId(new JSONObject(customResponse.getData()));
+									DeviceController.Companion.getInstance().setId(new JSONObject(customResponse.getData()));
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
@@ -177,7 +177,7 @@ public class ApplicationController extends Application {
 							@Override
 							public void onResponse(CustomResponse customResponse, String s) {
 								try {
-									DeviceController.getInstance().setId(new JSONObject(customResponse.getData()));
+									DeviceController.Companion.getInstance().setId(new JSONObject(customResponse.getData()));
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
@@ -193,15 +193,15 @@ public class ApplicationController extends Application {
 		VolleyController.getInstance().addInterceptor(new InternetCall.Interceptor() {
 			@Override
 			public void intercept(InternetCall internetCall) {
-				internetCall.getHeaders().put("deviceId", DeviceController.getInstance().getDevice().getId()+"");
+				internetCall.getHeaders().put("deviceId", DeviceController.Companion.getInstance().getDevice().getId()+"");
 			}
 		});
-		Log.d(DEBUG_TAG, "Device: " + new Gson().toJson(DeviceController.getInstance().getDevice()));
+		Log.d(DEBUG_TAG, "Device: " + new Gson().toJson(DeviceController.Companion.getInstance().getDevice()));
 	}
 	
 	@Override
 	public void onTerminate() {
-		DeviceController.getInstance().onTerminate(this);
+		DeviceController.Companion.getInstance().onTerminate(this);
 		super.onTerminate();
 	}
 }

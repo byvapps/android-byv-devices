@@ -28,12 +28,15 @@ class DeviceController private constructor() {
 		this.device = callbacks.savedDevice
 		if (this.device == null || callbacks.version > previousVersion) {
 			this.device = Device()
-			device!!.pushId = callbacks.forceGetPushId()
-			callbacks.postDevice(device)
 		} else {
 			device!!.setBadge(context, 0)
 			device!!.isActive = true
+		}
+		device!!.pushId = callbacks.forceGetPushId()
+		if(callbacks.isDeviceSent){
 			callbacks.putDevice(device)
+		}else{
+			callbacks.postDevice(device)
 		}
 		pref.edit().putInt("version", callbacks.version).apply()
 	}
@@ -82,6 +85,7 @@ class DeviceController private constructor() {
 		val version: Int
 		val appVersionCode: String
 		val appVersionName: String
+		val isDeviceSent: Boolean
 		fun saveDeviceLocal(device: Device?)
 		fun forceGetPushId(): String
 		fun postDevice(device: Device?)

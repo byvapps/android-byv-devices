@@ -32,6 +32,8 @@ class Device {
 		private set
 	var appVersionCode: String? = null
 	var pushId: String? = null
+	var badge: Int = 0
+		private set
 	var languageCode: String? = null
 		private set
 	var countryCode: String? = null
@@ -41,8 +43,6 @@ class Device {
 	var timezone: String? = null
 		private set
 	private var active: Boolean = false
-	var badge: Int = 0
-		private set
 	var id: String? = null
 
 	var isActive: Boolean

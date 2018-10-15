@@ -4,7 +4,9 @@ import android.app.Application;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.libraries.devices.Device;
 import com.libraries.devices.DeviceController;
@@ -93,6 +95,21 @@ public class ApplicationController extends Application {
 		});
 		DeviceController.Companion.getInstance().initialize(this, true, new DeviceController.Callbacks() {
 			@Override
+			public void forceGetPushId() {
+				FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+					@Override
+					public void onSuccess(InstanceIdResult instanceIdResult) {
+						DeviceController.Companion.getInstance().setPushId(instanceIdResult.getToken());
+					}
+				});
+			}
+			
+			@Override
+			public boolean isDeviceSent() {
+				return false; //SharedPrefMngr.firebaseTokenSent
+			}
+			
+			@Override
 			public void saveDeviceLocal(Device device) {
 				SharedPreferencesManager.getInstance().setDevice(new Gson().toJson(device));
 			}
@@ -115,11 +132,6 @@ public class ApplicationController extends Application {
 			@Override
 			public String getAppVersionName() {
 				return BuildConfig.VERSION_NAME;
-			}
-			
-			@Override
-			public String forceGetPushId() {
-				return FirebaseInstanceId.getInstance().getToken();
 			}
 			
 			@Override

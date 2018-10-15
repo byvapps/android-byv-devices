@@ -32,13 +32,17 @@ class DeviceController private constructor() {
 			device!!.setBadge(context, 0)
 			device!!.isActive = true
 		}
-		device!!.pushId = callbacks.forceGetPushId()
+		callbacks.forceGetPushId()
 		if(callbacks.isDeviceSent){
 			callbacks.putDevice(device)
 		}else{
 			callbacks.postDevice(device)
 		}
 		pref.edit().putInt("version", callbacks.version).apply()
+	}
+
+	fun setPushId(pushId: String){
+		device!!.pushId = pushId
 	}
 
 	fun onRegistrationIdObtained(registrationId: String) {
@@ -87,7 +91,7 @@ class DeviceController private constructor() {
 		val appVersionName: String
 		val isDeviceSent: Boolean
 		fun saveDeviceLocal(device: Device?)
-		fun forceGetPushId(): String
+		fun forceGetPushId()
 		fun postDevice(device: Device?)
 		fun putDevice(device: Device?)
 	}

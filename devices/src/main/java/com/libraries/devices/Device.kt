@@ -17,9 +17,12 @@ import me.leolin.shortcutbadger.ShortcutBadger
  */
 class Device {
 
-	val uid: String
-	val name: String
-	val os: String
+	val uid: String = UUID.randomUUID().toString()
+	val name: String = ""
+	val os: String = "android"
+	var pushId: String = "default_initial_value"
+	var badge: Int = 0
+		private set
 	var osVersion: String? = null
 		private set
 	var device: String? = null
@@ -31,9 +34,6 @@ class Device {
 	var appVersion: String? = null
 		private set
 	var appVersionCode: String? = null
-	var pushId: String? = null
-	var badge: Int = 0
-		private set
 	var languageCode: String? = null
 		private set
 	var countryCode: String? = null
@@ -42,7 +42,7 @@ class Device {
 		private set
 	var timezone: String? = null
 		private set
-	private var active: Boolean = false
+	private var active: Boolean = true
 	var id: String? = null
 
 	var isActive: Boolean
@@ -53,12 +53,6 @@ class Device {
 		}
 
 	init {
-		uid = UUID.randomUUID().toString()
-		name = ""
-		os = "android"
-		pushId = "default_initial_value"
-		badge = 0
-		active = true
 		updateData()
 	}
 
@@ -110,14 +104,13 @@ class Device {
 	}
 
 	fun setBadge(context: Context, badge: Int) {
-		if(DeviceController.instance.log) Log.d(DEBUG_TAG, "setBadge: $badge")
+		if(DeviceController.log) Log.d(DEBUG_TAG, "setBadge: $badge")
 		this.badge = badge
 		try {
 			ShortcutBadger.applyCount(context, this.badge)
 		} catch (e: Exception) {
-			if(DeviceController.instance.log) Log.w(DEBUG_TAG, "Badges not available on current device/configuration.")
+			if(DeviceController.log) Log.w(DEBUG_TAG, "Badges not available on current device/configuration.")
 		}
-
 	}
 
 	companion object {

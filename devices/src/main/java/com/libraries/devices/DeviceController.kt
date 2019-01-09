@@ -30,6 +30,7 @@ object DeviceController {
 		device.let {
 			if (it == null || callbacks.version > previousVersion) {
 				device = Device()
+				if(log) Log.d("ByvDevices", "created new device: ${device.toString()}")
 				saveDevice(device)
 			} else {
 				it.setBadge(context, 0)

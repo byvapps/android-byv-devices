@@ -17,6 +17,17 @@ import me.leolin.shortcutbadger.ShortcutBadger
  */
 class Device {
 
+	override fun toString(): String {
+		return "\"uid\": \"$uid\", " +
+				"\"name\": \"$name\", " +
+				"\"os\": \"$os\", " +
+				"\"pushId\": \"$pushId\", " +
+				"\"badge\": $badge, " +
+				"\"osVersion\": \"$osVersion\", " +
+				"\"device\": \"$device\", " +
+				"\"manufacturer\": \"$manufacturer\", etc..."
+	}
+
 	val uid: String = UUID.randomUUID().toString()
 	val name: String = ""
 	val os: String = "android"

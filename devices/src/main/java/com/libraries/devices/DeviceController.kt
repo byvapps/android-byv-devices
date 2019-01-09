@@ -15,7 +15,8 @@ object DeviceController {
 
 	var log = false
 	private var callbacks: Callbacks? = null
-	val device: Device?
+	var device: Device? = null
+		private set
 	get() = callbacks?.savedDevice
 
 	fun initialize(context: Context, log: Boolean, callbacks: Callbacks) {
@@ -25,29 +26,31 @@ object DeviceController {
 		if (log) Log.d("ByvDevices", "previousVersion: $previousVersion")
 		if (log) Log.d("ByvDevices", "currentVersion: " + callbacks.version)
 		this.callbacks = callbacks
-		val currentDevice = device
-		if (currentDevice == null || callbacks.version > previousVersion) {
-			saveDevice(Device())
-		} else {
-			currentDevice.setBadge(context, 0)
-			currentDevice.isActive = true
-			saveDevice(currentDevice)
+		device = callbacks.savedDevice
+		device.let {
+			if (it == null || callbacks.version > previousVersion) {
+				device = Device()
+				saveDevice(device)
+			} else {
+				it.setBadge(context, 0)
+				it.isActive = true
+				saveDevice(it)
+			}
 		}
 		callbacks.forceGetPushId()
 		if(callbacks.isDeviceSent){
-			callbacks.putDevice(currentDevice)
+			callbacks.putDevice(device)
 		}else{
-			callbacks.postDevice(currentDevice)
+			callbacks.postDevice(device)
 		}
 		pref.edit().putInt("version", callbacks.version).apply()
 	}
 
 	fun setPushId(pushId: String){
-		val currentDevice = device
-		val different = currentDevice?.pushId == pushId
-		currentDevice?.pushId = pushId
-		saveDevice(currentDevice)
-		if(different) callbacks?.putDevice(currentDevice)
+		val different = device?.pushId == pushId
+		device?.pushId = pushId
+		saveDevice(device)
+		if(different) callbacks?.putDevice(device)
 	}
 
 	fun onRegistrationIdObtained(registrationId: String) {
@@ -56,13 +59,12 @@ object DeviceController {
 
 	@Throws(JSONException::class)
 	fun setId(json: JSONObject) {
-		val currentDevice = device
 		if (json.has("id")) {
-			currentDevice?.id = json.getString("id")
+			device?.id = json.getString("id")
 		} else if (json.has("_id")) {
-			currentDevice?.id = json.getString("_id")
+			device?.id = json.getString("_id")
 		}
-		saveDevice(currentDevice)
+		saveDevice(device)
 	}
 
 	fun postDevice() {
@@ -74,9 +76,8 @@ object DeviceController {
 	}
 
 	fun setBadge(context: Context, badge: Int) {
-		val currentDevice = device
-		currentDevice?.setBadge(context, badge)
-		saveDevice(currentDevice)
+		device?.setBadge(context, badge)
+		saveDevice(device)
 	}
 
 	private fun saveDevice(device: Device?){
@@ -84,13 +85,12 @@ object DeviceController {
 	}
 
 	fun onTerminate(context: Context) {
-		val currentDevice = device
-		currentDevice?.setBadge(context, 0)
-		currentDevice?.isActive = true
-		callbacks?.appVersionName?.let { currentDevice?.setAppVersionName(it) }
-		currentDevice?.appVersionCode = callbacks?.appVersionCode
-		saveDevice(currentDevice)
-		callbacks?.putDevice(currentDevice)
+		device?.setBadge(context, 0)
+		device?.isActive = true
+		callbacks?.appVersionName?.let { device?.setAppVersionName(it) }
+		device?.appVersionCode = callbacks?.appVersionCode
+		saveDevice(device)
+		callbacks?.putDevice(device)
 	}
 
 	interface Callbacks {

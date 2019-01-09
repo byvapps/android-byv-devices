@@ -93,13 +93,13 @@ public class ApplicationController extends Application {
 				return null;
 			}
 		});
-		DeviceController.Companion.getInstance().initialize(this, true, new DeviceController.Callbacks() {
+		DeviceController.INSTANCE.initialize(this, true, new DeviceController.Callbacks() {
 			@Override
 			public void forceGetPushId() {
 				FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
 					@Override
 					public void onSuccess(InstanceIdResult instanceIdResult) {
-						DeviceController.Companion.getInstance().setPushId(instanceIdResult.getToken());
+						DeviceController.INSTANCE.setPushId(instanceIdResult.getToken());
 					}
 				});
 			}
@@ -155,7 +155,7 @@ public class ApplicationController extends Application {
 							@Override
 							public void onResponse(CustomResponse customResponse, String s) {
 								try {
-									DeviceController.Companion.getInstance().setId(new JSONObject(customResponse.getData()));
+									DeviceController.INSTANCE.setId(new JSONObject(customResponse.getData()));
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
@@ -189,7 +189,7 @@ public class ApplicationController extends Application {
 							@Override
 							public void onResponse(CustomResponse customResponse, String s) {
 								try {
-									DeviceController.Companion.getInstance().setId(new JSONObject(customResponse.getData()));
+									DeviceController.INSTANCE.setId(new JSONObject(customResponse.getData()));
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
@@ -205,15 +205,15 @@ public class ApplicationController extends Application {
 		VolleyController.getInstance().addInterceptor(new InternetCall.Interceptor() {
 			@Override
 			public void intercept(InternetCall internetCall) {
-				internetCall.getHeaders().put("deviceId", DeviceController.Companion.getInstance().getDevice().getId()+"");
+				internetCall.getHeaders().put("deviceId", DeviceController.INSTANCE.getDevice().getId()+"");
 			}
 		});
-		Log.d(DEBUG_TAG, "Device: " + new Gson().toJson(DeviceController.Companion.getInstance().getDevice()));
+		Log.d(DEBUG_TAG, "Device: " + new Gson().toJson(DeviceController.INSTANCE.getDevice()));
 	}
 	
 	@Override
 	public void onTerminate() {
-		DeviceController.Companion.getInstance().onTerminate(this);
+		DeviceController.INSTANCE.onTerminate(this);
 		super.onTerminate();
 	}
 }

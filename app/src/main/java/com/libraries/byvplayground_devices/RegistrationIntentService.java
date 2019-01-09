@@ -61,12 +61,12 @@ public class RegistrationIntentService extends IntentService {
 		// Add custom implementation, as needed.
 		if(SharedPreferencesManager.getInstance().getDevice()==null){
 			Log.d(DEBUG_TAG, "Posting new device");
-			DeviceController.Companion.getInstance().onRegistrationIdObtained(token);
-			DeviceController.Companion.getInstance().postDevice();
+			DeviceController.INSTANCE.onRegistrationIdObtained(token);
+			DeviceController.INSTANCE.postDevice();
 		}else {
 			Log.d(DEBUG_TAG, "Puting modified device");
-			DeviceController.Companion.getInstance().onRegistrationIdObtained(token);
-			DeviceController.Companion.getInstance().putDevice();
+			DeviceController.INSTANCE.onRegistrationIdObtained(token);
+			DeviceController.INSTANCE.putDevice();
 		}
 	}
 

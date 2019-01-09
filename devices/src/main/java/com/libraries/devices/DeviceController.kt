@@ -16,7 +16,10 @@ object DeviceController {
 	var log = false
 	private var callbacks: Callbacks? = null
 	var device: Device? = null
-		private set
+		private set(value) {
+			if(log) Log.d("ByvDevices", "set device: ${value.toString()}")
+			field = value
+		}
 	get() = callbacks?.savedDevice
 
 	fun initialize(context: Context, log: Boolean, callbacks: Callbacks) {
@@ -26,16 +29,18 @@ object DeviceController {
 		if (log) Log.d("ByvDevices", "previousVersion: $previousVersion")
 		if (log) Log.d("ByvDevices", "currentVersion: " + callbacks.version)
 		this.callbacks = callbacks
-		device = callbacks.savedDevice
-		device.let {
+		//device = callbacks.savedDevice
+		device = device.let {
 			if (it == null || callbacks.version > previousVersion) {
-				device = Device()
-				if(log) Log.d("ByvDevices", "created new device: ${device.toString()}")
-				saveDevice(device)
+				val newDevice = Device()
+				if(log) Log.d("ByvDevices", "created new device0: $newDevice")
+				saveDevice(newDevice)
+				newDevice
 			} else {
 				it.setBadge(context, 0)
 				it.isActive = true
 				saveDevice(it)
+				it
 			}
 		}
 		callbacks.forceGetPushId()

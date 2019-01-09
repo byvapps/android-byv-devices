@@ -34,7 +34,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 	    }
 
 	    if(message.getData().containsKey("badge")){
-		    DeviceController.Companion.getInstance().setBadge(ApplicationController.getInstance(), Integer.parseInt(message.getData().get("badge")));
+		    DeviceController.INSTANCE.setBadge(ApplicationController.getInstance(), Integer.parseInt(message.getData().get("badge")));
 	    }
 
 	    // [START_EXCLUDE]

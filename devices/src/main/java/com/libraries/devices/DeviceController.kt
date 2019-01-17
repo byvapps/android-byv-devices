@@ -59,7 +59,7 @@ object DeviceController {
 	fun setPushId(pushId: String){
 		log("setPushId: $pushId")
 		log("device: $device")
-		val different = device?.pushId == pushId
+		val different = device?.pushId != pushId
 		log("different: $different")
 		device?.pushId = pushId
 		saveDevice(device)

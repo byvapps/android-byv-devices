@@ -17,23 +17,27 @@ object DeviceController {
 	private var callbacks: Callbacks? = null
 	var device: Device? = null
 		private set(value) {
-			if(log) Log.d("ByvDevices", "set device: ${value.toString()}")
+			log("set device: ${value.toString()}")
 			field = value
 		}
 	get() = callbacks?.savedDevice
+
+	private fun log(text: String){
+		if (log) Log.d("ByvDevices", text)
+	}
 
 	fun initialize(context: Context, log: Boolean, callbacks: Callbacks) {
 		this.log = log
 		val pref = context.getSharedPreferences("ByvDevices", Context.MODE_PRIVATE)
 		val previousVersion = pref.getInt("version", 0)
-		if (log) Log.d("ByvDevices", "previousVersion: $previousVersion")
-		if (log) Log.d("ByvDevices", "currentVersion: " + callbacks.version)
+		log("previousVersion: $previousVersion")
+		log("previousVersion: ${callbacks.version}")
 		this.callbacks = callbacks
 		//device = callbacks.savedDevice
 		device = device.let {
 			if (it == null || callbacks.version > previousVersion) {
 				val newDevice = Device()
-				if(log) Log.d("ByvDevices", "created new device0: $newDevice")
+				log("created new device0: $newDevice")
 				saveDevice(newDevice)
 				newDevice
 			} else {
@@ -53,7 +57,10 @@ object DeviceController {
 	}
 
 	fun setPushId(pushId: String){
+		log("setPushId: $pushId")
+		log("device: $device")
 		val different = device?.pushId == pushId
+		log("different: $different")
 		device?.pushId = pushId
 		saveDevice(device)
 		if(different) callbacks?.putDevice(device)

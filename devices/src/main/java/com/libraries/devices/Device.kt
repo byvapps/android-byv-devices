@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 
-import java.util.Calendar
 import java.util.Currency
 import java.util.Locale
 import java.util.TimeZone
@@ -15,7 +14,25 @@ import me.leolin.shortcutbadger.ShortcutBadger
 /**
  * Created by inlacou on 11/11/16.
  */
-class Device {
+data class Device(
+		val uid: String = UUID.randomUUID().toString(),
+		val name: String = "",
+		val os: String = "android",
+		var pushId: String = "default_initial_value",
+		var badge: Int = 0,
+		var osVersion: String? = null,
+		var device: String? = null,
+		var manufacturer: String? = null,
+		var model: String? = null,
+		var appVersion: String? = null,
+		var appVersionCode: String? = null,
+		var languageCode: String? = null,
+		var countryCode: String? = null,
+		var currencyCode: String? = null,
+		var timezone: String? = null,
+		private var active: Boolean = true,
+		var id: String? = null
+) {
 
 	override fun toString(): String {
 		return "\"uid\": \"$uid\", " +
@@ -27,34 +44,6 @@ class Device {
 				"\"device\": \"$device\", " +
 				"\"manufacturer\": \"$manufacturer\", etc..."
 	}
-
-	val uid: String = UUID.randomUUID().toString()
-	val name: String = ""
-	val os: String = "android"
-	var pushId: String = "default_initial_value"
-	var badge: Int = 0
-		private set
-	var osVersion: String? = null
-		private set
-	var device: String? = null
-		private set
-	var manufacturer: String? = null
-		private set
-	var model: String? = null
-		private set
-	var appVersion: String? = null
-		private set
-	var appVersionCode: String? = null
-	var languageCode: String? = null
-		private set
-	var countryCode: String? = null
-		private set
-	var currencyCode: String? = null
-		private set
-	var timezone: String? = null
-		private set
-	private var active: Boolean = true
-	var id: String? = null
 
 	var isActive: Boolean
 		get() = active
@@ -70,44 +59,28 @@ class Device {
 	private fun updateData() {
 		try {
 			osVersion = Build.VERSION.RELEASE
-		} catch (ignored: Exception) {
-		}
-
+		} catch (ignored: Exception) {}
 		try {
 			device = Build.DEVICE
-		} catch (ignored: Exception) {
-		}
-
+		} catch (ignored: Exception) {}
 		try {
 			manufacturer = Build.MANUFACTURER
-		} catch (ignored: Exception) {
-		}
-
+		} catch (ignored: Exception) {}
 		try {
 			model = Build.MODEL
-		} catch (ignored: Exception) {
-		}
-
+		} catch (ignored: Exception) {}
 		try {
 			languageCode = Locale.getDefault().language
-		} catch (ignored: Exception) {
-		}
-
+		} catch (ignored: Exception) {}
 		try {
 			countryCode = Locale.getDefault().country
-		} catch (ignored: Exception) {
-		}
-
+		} catch (ignored: Exception) {}
 		try {
 			currencyCode = Currency.getInstance(Locale.getDefault()).currencyCode
-		} catch (ignored: Exception) {
-		}
-
+		} catch (ignored: Exception) {}
 		try {
 			timezone = TimeZone.getDefault().id
-		} catch (ignored: Exception) {
-		}
-
+		} catch (ignored: Exception) {}
 	}
 
 	fun setAppVersionName(appVersion: String) {

@@ -1,8 +1,6 @@
 package com.libraries.devices
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import android.util.Log
 
 import org.json.JSONException
@@ -16,11 +14,7 @@ object DeviceController {
 	var log = false
 	private var callbacks: Callbacks? = null
 	var device: Device? = null
-		private set(value) {
-			log("set device: ${value.toString()}")
-			field = value
-		}
-	get() = callbacks?.savedDevice
+		private set
 
 	private fun log(text: String){
 		if (log) Log.d("ByvDevices", text)
@@ -33,7 +27,7 @@ object DeviceController {
 		log("previousVersion: $previousVersion")
 		log("previousVersion: ${callbacks.version}")
 		this.callbacks = callbacks
-		//device = callbacks.savedDevice
+		update()
 		device = device.let {
 			if (it == null || callbacks.version > previousVersion) {
 				val newDevice = Device()
@@ -57,11 +51,14 @@ object DeviceController {
 	}
 
 	fun setPushId(pushId: String){
-		log("setPushId: $pushId")
-		log("device: $device")
-		val different = device?.pushId != pushId
-		log("different: $different")
-		device?.pushId = pushId
+		update()
+		log("setPushId | param: $pushId")
+		log("setPushId | device: $device")
+		val different = device!!.pushId != pushId
+		log("setPushId | different: $different")
+		log("setPushId | device.pushId before: ${device?.pushId}")
+		device!!.pushId = pushId
+		log("setPushId | device.pushId after: ${device?.pushId}")
 		saveDevice(device)
 		if(different) callbacks?.putDevice(device)
 	}
@@ -72,6 +69,7 @@ object DeviceController {
 
 	@Throws(JSONException::class)
 	fun setId(json: JSONObject) {
+		update()
 		if (json.has("id")) {
 			device?.id = json.getString("id")
 		} else if (json.has("_id")) {
@@ -89,6 +87,7 @@ object DeviceController {
 	}
 
 	fun setBadge(context: Context, badge: Int) {
+		update()
 		device?.setBadge(context, badge)
 		saveDevice(device)
 	}
@@ -97,7 +96,12 @@ object DeviceController {
 		callbacks?.saveDeviceLocal(device)
 	}
 
+	fun update(){
+		device = callbacks?.savedDevice
+	}
+
 	fun onTerminate(context: Context) {
+		update()
 		device?.setBadge(context, 0)
 		device?.isActive = true
 		callbacks?.appVersionName?.let { device?.setAppVersionName(it) }
